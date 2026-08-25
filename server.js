@@ -26,10 +26,6 @@ const server = http.createServer((req, res) => {
             const firstName = params.firstName || 'Joel';
             const lastName = params.lastName || 'Murach';
             const email = params.email || 'joel@murach.com';
-            const dob = params.dob || '';
-            const hearAbout = params.hearAbout || 'Search engine';
-            const announcements = Array.isArray(params.announcements) ? params.announcements.join(', ') : (params.announcements || 'None');
-            const contactBy = params.contactBy || 'Email or postal mail';
 
             let thanksPath = path.join(__dirname, 'src', 'main', 'webapp', 'thanks.jsp');
             if (!fs.existsSync(thanksPath)) {
@@ -48,10 +44,6 @@ const server = http.createServer((req, res) => {
                 html = html.replace(/\$\{firstName\}/g, firstName);
                 html = html.replace(/\$\{lastName\}/g, lastName);
                 html = html.replace(/\$\{email\}/g, email);
-                html = html.replace(/\$\{dob\}/g, dob);
-                html = html.replace(/\$\{hearAbout\}/g, hearAbout);
-                html = html.replace(/\$\{announcements\}/g, announcements);
-                html = html.replace(/\$\{contactBy\}/g, contactBy);
 
                 res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
                 return res.end(html);

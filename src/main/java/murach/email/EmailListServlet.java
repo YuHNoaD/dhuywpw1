@@ -32,11 +32,6 @@ public class EmailListServlet extends HttpServlet {
             String firstName = request.getParameter("firstName");
             String lastName = request.getParameter("lastName");
             String email = request.getParameter("email");
-            String dob = request.getParameter("dob");
-            String hearAbout = request.getParameter("hearAbout");
-            String[] announcementsArray = request.getParameterValues("announcements");
-            String announcements = (announcementsArray != null) ? String.join(", ", announcementsArray) : (request.getParameter("announcements") != null ? request.getParameter("announcements") : "None");
-            String contactBy = request.getParameter("contactBy");
 
             User user = new User(firstName != null ? firstName : "", lastName != null ? lastName : "", email != null ? email : "");
             UserDB.insert(user);
@@ -45,10 +40,6 @@ public class EmailListServlet extends HttpServlet {
             request.setAttribute("firstName", firstName != null ? firstName : "");
             request.setAttribute("lastName", lastName != null ? lastName : "");
             request.setAttribute("email", email != null ? email : "");
-            request.setAttribute("dob", dob != null ? dob : "");
-            request.setAttribute("hearAbout", hearAbout != null ? hearAbout : "");
-            request.setAttribute("announcements", announcements);
-            request.setAttribute("contactBy", contactBy != null ? contactBy : "");
 
             url = "/thanks.jsp";
         }

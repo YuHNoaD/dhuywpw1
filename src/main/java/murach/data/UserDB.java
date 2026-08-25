@@ -2,6 +2,7 @@ package murach.data;
 
 import murach.business.User;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,10 +16,8 @@ public class UserDB {
             file.getParentFile().mkdirs();
         }
 
-        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(file, true)))) {
-            out.println(user.getFirstName() + "," + user.getLastName() + "," + user.getEmail() + "," +
-                        user.getDob() + "," + user.getHearAbout() + "," + user.getAnnouncements() + "," + user.getContactBy());
-            System.out.println("User survey written to file " + FILE_PATH + ": " + user.getEmail());
+        try (PrintWriter out = new PrintWriter(new OutputStreamWriter(new FileOutputStream(file, true), StandardCharsets.UTF_8))) {
+            out.println(user.getFirstName() + "," + user.getLastName() + "," + user.getEmail());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -34,19 +33,12 @@ public class UserDB {
             return users;
         }
 
-        try (BufferedReader in = new BufferedReader(new FileReader(file))) {
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
             String line;
             while ((line = in.readLine()) != null) {
                 String[] tokens = line.split(",");
                 if (tokens.length >= 3) {
-                    String fn = tokens[0].trim();
-                    String ln = tokens[1].trim();
-                    String em = tokens[2].trim();
-                    String dob = tokens.length > 3 ? tokens[3].trim() : "";
-                    String ha = tokens.length > 4 ? tokens[4].trim() : "";
-                    String ann = tokens.length > 5 ? tokens[5].trim() : "";
-                    String cb = tokens.length > 6 ? tokens[6].trim() : "";
-                    User user = new User(fn, ln, em, dob, ha, ann, cb);
+                    User user = new User(tokens[0].trim(), tokens[1].trim(), tokens[2].trim());
                     users.add(user);
                 }
             }
